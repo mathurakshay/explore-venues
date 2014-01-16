@@ -1,0 +1,121 @@
+
+<!DOCTYPE html >
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://ogp.me/ns/fb#">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Explore FourSquare Venues</title>
+<style>
+	#map-canvas { height: 400px;	}
+	.accordion-body {padding: 0 15px;}
+	.section_heading {font-size: 16px; font-weight: bold;}
+	.section_desc {font-size: 11px; color: #777;}
+</style>
+
+<link type="text/css" rel="stylesheet" href="bootstrap.min.css" />
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+<script language="javascript" type="text/javascript" src="jquery.js"></script>
+<script language="javascript" type="text/javascript" src="bootstrap.js"></script>
+<script language="javascript" type="text/javascript" src="underscore-min.js"></script>
+<script language="javascript" type="text/javascript" src="backbone-min.js"></script>
+<script language="javascript" type="text/javascript" src="jquery.tmpl.js"></script>
+<script language="javascript" type="text/javascript" src="main.js"></script>
+
+</head>
+<body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="brand" href="/">Explore FourSquare Venues</a>
+        </div>
+      </div>
+    </div>
+
+    <div id="maindiv" class="container-fluid" style="padding-top: 60px;">
+		<div id="venue_explorer" class="accordion">
+			<div class="accordion-group">
+				<div class="accordion-heading">
+					<a href="#map_container" data-parent="#venue_explorer" data-toggle="collapse" class="accordion-toggle">
+						<span class="section_heading">World Map</span>
+						<span class="section_desc">Click on the map to explore venues in that area</span>
+					</a>
+				</div>
+				<div class="accordion-body in" id="map_container">
+					<div id="map-canvas"></div>
+				</div>
+			</div>
+			<div class="accordion-group">
+				<div class="accordion-heading">
+					<a href="#venue_list_container" data-parent="#venue_explorer" data-toggle="collapse" class="accordion-toggle">
+						<span class="section_heading">Venues</span>
+						<span class="section_desc" id="venue_list_info"></span>
+					</a>
+				</div>
+				<div class="accordion-body collapse" id="venue_list_container">
+					<div id="venue_list" class="row-fluid"></div>
+				</div>
+			</div>
+	</div>
+
+<script type="text/x-jquery-tmpl" id="venue_template">
+    <div><img src="${photos.groups[0].items[0].prefix}height300${photos.groups[0].items[0].suffix}" /></div>
+    <div>${name}</div>
+
+</script>
+
+<script type="text/x-jquery-tmpl" id="venue_details_template">
+	<div class="modal-header">
+		<a class="close" data-dismiss="modal">&times;</a>
+		<h4 style="text-align: center;">${name}</h4>
+	</div>
+	<div class="modal-body">
+		{{if price}}${price.message} {{/if}}{{if categories.length > 0}}${display_categories.join(",")} {{/if}}at ${venue_location}
+		<div class="row-fluid">
+			<div class="span6">
+				<dl class="dl-horizontal">
+					<dt>Checkins</dt>
+					<dd>${stats.checkinsCount}</dd>
+					<dt>Likes</dt>
+					<dd>${likes.count}</dd>
+					{{if rating}}
+						<dt>Overall Rating</dt>
+						<dd>${rating}</dd>
+					{{/if}}
+				</dl>
+			</div>
+			<div class="span6">
+				<dl class="dl-horizontal">
+					<dt>Users</dt>
+					<dd>${stats.usersCount}</dd>
+					<dt>Tips</dt>
+					<dd>${stats.tipCount}</dd>
+				</dl>
+			</div>
+		</div>
+		<dl class="dl-horizontal">
+			<dt>Coordinates</dt>
+			<dd>${location.lat}, ${location.lng}</dd>
+			<dt>Visit</dt>
+			<dd><a target="_blank" href="https://maps.google.com/maps?z=14&q=${location.lat},${location.lng}">Google Maps for driving directions</a></dd>
+			<dd><a target="_blank" href="https://foursquare.com/v/s/${id}">FourSquare for more details</a></dd>
+		</dl>
+		<div id="venue_photos" class="carousel">
+			<!-- Carousel items -->
+			<div class="carousel-inner" style="text-align: center">
+				{{tmpl(photos.groups[0].items) $("#carousal_item_template")}}
+			</div>
+			<!-- Carousel nav -->
+			<a class="carousel-control left" href="#venue_photos" data-slide="prev">&lsaquo;</a>
+			<a class="carousel-control right" href="#venue_photos" data-slide="next">&rsaquo;</a>
+		</div>
+	</div>
+</script>
+
+<script type="text/x-jquery-tmpl" id="carousal_item_template">
+	<div class=" item">
+		<img src="${prefix}width500${suffix}">
+	</div>
+</script>
+</body>
+</html>
