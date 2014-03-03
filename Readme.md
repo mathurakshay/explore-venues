@@ -22,3 +22,8 @@ Libraries:
 - Underscore is required by Backbone.
 - jQuery template library (jquery.tmpl.js) provides support for using templates in JavaScript.
 
+Help Reading Code:
+------------------
+
+The discussion about this code was done in a workshop targeted for creating single page web application using BackboneJS.
+Slides used for the discussion are available at <http://facebook-programming.blogspot.in/2014/03/creating-single-page-web-app-using.html>
